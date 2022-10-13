@@ -1,6 +1,7 @@
-package MOCUMOCU.project.domain;
+package MOCUMOCU.project.reward;
 
 import MOCUMOCU.project.Market.Market;
+import MOCUMOCU.project.coupon.Coupon;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,4 +21,8 @@ public class Reward {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name= "market_id")
     private Market market;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name= "coupon_id")
+    private Coupon coupon;
 }

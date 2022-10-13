@@ -1,7 +1,8 @@
 package MOCUMOCU.project.reward;
 
-import MOCUMOCU.project.domain.Reward;
 import MOCUMOCU.project.form.RewardAddDTO;
+
+import java.util.List;
 
 public interface RewardService {
 

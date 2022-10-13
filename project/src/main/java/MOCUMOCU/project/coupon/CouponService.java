@@ -1,6 +1,6 @@
 package MOCUMOCU.project.coupon;
 
-import MOCUMOCU.project.coupon.Coupon;
+import MOCUMOCU.project.form.CouponInfoDTO;
 import MOCUMOCU.project.form.RewardInfoDTO;
 import MOCUMOCU.project.form.SaveStampDTO;
 import MOCUMOCU.project.form.UseStampDTO;
@@ -15,11 +15,8 @@ public interface CouponService {
 
     void earnStamp(SaveStampDTO saveStampDTO);
 
-    void removeCoupon(Coupon coupon);
-
-    void changeBoard(Long id);
-
-    void changeStamp(Long id);
+    List<CouponInfoDTO> findAllCoupon(Long id);
 
     List<RewardInfoDTO> findAllReward(Long id);
+
 }

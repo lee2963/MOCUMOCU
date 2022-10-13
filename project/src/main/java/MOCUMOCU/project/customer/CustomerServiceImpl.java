@@ -1,16 +1,12 @@
 package MOCUMOCU.project.customer;
 
-import MOCUMOCU.project.coupon.Coupon;
 import MOCUMOCU.project.domain.Privacy;
-import MOCUMOCU.project.form.CouponInfoDTO;
 import MOCUMOCU.project.form.CustomerInfoDTO;
 import MOCUMOCU.project.form.CustomerLoginDTO;
-import MOCUMOCU.project.coupon.CouponRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,7 +15,6 @@ import java.util.List;
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
-    private final CouponRepository couponRepository;
 
     @Override
     public Long join(Customer customer) {
@@ -37,25 +32,6 @@ public class CustomerServiceImpl implements CustomerService {
     public void updatePrivacy(Long id, Privacy privacy) {
         Customer findCustomer = customerRepository.findOne(id);
         findCustomer.setPrivacy(privacy);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<CouponInfoDTO> findAllCoupon(Long id) {
-        List<Coupon> myCoupons = couponRepository.findByCustomerId(id);
-        List<CouponInfoDTO> couponInfoDTOList = new ArrayList<>();
-        System.out.println("2");
-        for (Coupon myCoupon : myCoupons) {
-            CouponInfoDTO couponInfoDTO = new CouponInfoDTO();
-
-            couponInfoDTO.setCouponId(myCoupon.getId());
-            couponInfoDTO.setMarketName(myCoupon.getMarket().getMarketName());
-            couponInfoDTO.setStampAmount(myCoupon.getAmount());
-
-            couponInfoDTOList.add(couponInfoDTO);
-        }
-        System.out.println("#");
-        return  couponInfoDTOList;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package MOCUMOCU.project.reward;
 
-import MOCUMOCU.project.domain.Reward;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -23,6 +22,12 @@ public class RewardRepository {
 
     public Reward findOne(Long id) {
         return em.find(Reward.class, id);
+    }
+
+    public List<Reward> findByCouponId(Long couponId){
+        return em.createQuery("select r from Reward r where r.couponId.id = : couponId", Reward.class)
+                .setParameter("couponId", couponId)
+                .getResultList();
     }
 
     public List<Reward> findByMarketId(Long marketId) {

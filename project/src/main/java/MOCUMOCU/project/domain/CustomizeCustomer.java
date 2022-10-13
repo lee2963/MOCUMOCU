@@ -8,17 +8,17 @@ import javax.persistence.*;
 
 @Entity
 @Getter @Setter
-public class BoardCustomer {
+public class CustomizeCustomer {
 
     @Id @GeneratedValue
-    @Column(name = "board_customer_id")
+    @Column(name = "customize_customer_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id")
-    private BoardCustom boardCustom;
+    @JoinColumn(name = "customize_id")
+    private CustomizeCustomer customizeCustomer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "boardCustom")
+    @JoinColumn(name = "customizeCustom")
     private Customer customer;
 }

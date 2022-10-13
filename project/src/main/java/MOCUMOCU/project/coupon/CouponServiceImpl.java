@@ -1,15 +1,12 @@
 package MOCUMOCU.project.coupon;
 
 import MOCUMOCU.project.customer.CustomerRepository;
-import MOCUMOCU.project.coupon.Coupon;
-import MOCUMOCU.project.domain.Reward;
+import MOCUMOCU.project.form.CouponInfoDTO;
 import MOCUMOCU.project.form.RewardInfoDTO;
 import MOCUMOCU.project.form.SaveStampDTO;
 import MOCUMOCU.project.form.UseStampDTO;
-import MOCUMOCU.project.coupon.CouponRepository;
 import MOCUMOCU.project.Market.MarketRepository;
-import MOCUMOCU.project.reward.RewardRepository;
-import MOCUMOCU.project.coupon.CouponService;
+import MOCUMOCU.project.reward.Reward;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +20,6 @@ import java.util.List;
 public class CouponServiceImpl implements CouponService {
 
     private final CouponRepository couponRepository;
-    private final RewardRepository rewardRepository;
     private final MarketRepository marketRepository;
     private final CustomerRepository customerRepository;
 
@@ -38,8 +34,8 @@ public class CouponServiceImpl implements CouponService {
     public boolean useStamp(UseStampDTO useStampDTO) {
         Coupon findCoupon = couponRepository.findOne(useStampDTO.getCouponId());
 
-        if(findCoupon.getAmount() - useStampDTO.getCouponRequire() > 0 ){
-            findCoupon.setAmount(findCoupon.getAmount() - useStampDTO.getCouponRequire());
+        if(findCoupon.getAmountStamp() - useStampDTO.getCouponRequire() > 0 ){
+            findCoupon.setAmountStamp(findCoupon.getAmountStamp() - useStampDTO.getCouponRequire());
             return true;
         }
         return false;
@@ -48,51 +44,53 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public void earnStamp(SaveStampDTO saveStampDTO) {
 
-        List<Coupon> findCoupons = couponRepository.findByCustomerIdAndMarketId(saveStampDTO.getCustomerId(), saveStampDTO.getMarketId());
+        Coupon findCoupon = couponRepository
+                .findByCustomerIdAndMarketId(saveStampDTO.getCustomerId(), saveStampDTO.getMarketId());
 
-        if (findCoupons.isEmpty()) {
+        if (findCoupon == null) {
             Coupon newCoupon = new Coupon();
-            newCoupon.setMarket(marketRepository.findOne(saveStampDTO.getMarketId()));
-            newCoupon.setCustomer(customerRepository.findOne(saveStampDTO.getCustomerId()));
-            newCoupon.setAmount(saveStampDTO.getAmount());
-            couponRepository.save(newCoupon);
+
+            newCoupon.setCoupon(customerRepository.findOne(saveStampDTO.getCustomerId()),
+                    marketRepository.findOne(saveStampDTO.getMarketId()), saveStampDTO.getAmount());
+
+             couponRepository.save(newCoupon);
         } else{
-            findCoupons.get(0).setAmount(findCoupons.get(0).getAmount() + saveStampDTO.getAmount());
+            findCoupon.setAmountStamp(findCoupon.getAmountStamp() + saveStampDTO.getAmount());
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CouponInfoDTO> findAllCoupon(Long customerId) {
+        List<Coupon> myCoupons = couponRepository.findByCustomerId(customerId);
+        List<CouponInfoDTO> couponInfoDTOList = new ArrayList<>();
+
+        for (Coupon myCoupon : myCoupons) {
+            CouponInfoDTO couponInfoDTO = new CouponInfoDTO();
+
+            couponInfoDTO.setCouponId(myCoupon.getId());
+            couponInfoDTO.setMarketName(myCoupon.getMarket().getMarketName());
+            couponInfoDTO.setStampAmount(myCoupon.getAmountStamp());
+
+            couponInfoDTOList.add(couponInfoDTO);
         }
 
-    }
-
-
-    @Override
-    public void removeCoupon(Coupon coupon) {
-        couponRepository.remove(coupon);
+        return  couponInfoDTOList;
     }
 
     @Override
-    public void changeBoard(Long id) {
-
-    }
-
-    @Override
-    public void changeStamp(Long id) {
-
-    }
-
-    @Override
+    @Transactional(readOnly = true)
     public List<RewardInfoDTO> findAllReward(Long id) {
-        Coupon findCoupon = couponRepository.findOne(id);
-        List<Reward> rewards = rewardRepository.findByMarketId(findCoupon.getMarket().getId());
+        Coupon coupon = couponRepository.findOne(id);
+        List<Reward> rewards = coupon.getRewards();
         List<RewardInfoDTO> rewardInfoDTOList = new ArrayList<>();
 
         for (Reward reward : rewards) {
-            RewardInfoDTO rewardInfoDTO = new RewardInfoDTO();
-
-            rewardInfoDTO.setRewardContent(reward.getRewardContent());
-            rewardInfoDTO.setNeedAmount(reward.getNeedAmount());
-
-            rewardInfoDTOList.add(rewardInfoDTO);
+            rewardInfoDTOList.add(new RewardInfoDTO(reward.getNeedAmount(), reward.getRewardContent()));
         }
 
         return rewardInfoDTOList;
     }
+
+
 }

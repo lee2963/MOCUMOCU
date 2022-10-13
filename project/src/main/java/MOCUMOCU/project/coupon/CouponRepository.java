@@ -1,6 +1,5 @@
 package MOCUMOCU.project.coupon;
 
-import MOCUMOCU.project.coupon.Coupon;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -13,14 +12,15 @@ public class CouponRepository {
 
     private final EntityManager em;
 
-    public void save(Coupon coupon) {
+    public Long save(Coupon coupon) {
         em.persist(coupon);
+
+        return coupon.getId();
     }
 
     public Coupon findOne(Long id) {
-        Coupon findCoupon = em.find(Coupon.class, id);
+       return em.find(Coupon.class, id);
 
-        return findCoupon;
     }
 
 
@@ -30,10 +30,19 @@ public class CouponRepository {
                 .getResultList();
     }
 
-    public List<Coupon> findByCustomerIdAndMarketId(Long customerId, Long marketId) {
-        return em.createQuery("select c from Coupon c where c.customer.id = :customerId and c.market.id = :marketId", Coupon.class)
-                .setParameter("customerId", customerId).setParameter("marketId", marketId)
+    public Coupon findByCustomerIdAndMarketId(Long customerId, Long marketId) {
+        List<Coupon> coupons = em.createQuery("select c from Coupon c where c.customer.id = :customerId and c.market.id = :marketId", Coupon.class)
+                .setParameter("customerId", customerId)
+                .setParameter("marketId", marketId)
                 .getResultList();
+
+        if (coupons.isEmpty()) {
+            return null;
+        } else{
+            return coupons.get(0);
+        }
+
+
     }
 
 

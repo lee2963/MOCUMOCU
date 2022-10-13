@@ -11,8 +11,7 @@ import java.util.List;
 
 @Entity
 @Getter @Setter
-public class
-Owner {
+public class Owner {
 
     @Id @GeneratedValue
     @Column(name = "owner_id")
@@ -23,6 +22,6 @@ Owner {
 
     private boolean enable;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<Market> markets = new ArrayList<>();
 }

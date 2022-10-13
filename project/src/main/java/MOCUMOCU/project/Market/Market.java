@@ -1,7 +1,7 @@
 package MOCUMOCU.project.Market;
 
 import MOCUMOCU.project.coupon.Coupon;
-import MOCUMOCU.project.domain.Reward;
+import MOCUMOCU.project.reward.Reward;
 import MOCUMOCU.project.owner.Owner;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,15 +18,16 @@ public class Market {
     @Column(name = "market_id")
     private Long id;
 
-    private String businessNum;
     private String marketPhoneNum;
     private String marketName;
+    private String marketAddress;
+    private String event;
 
     @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
-    @OneToMany(mappedBy = "market")
+    @OneToMany(mappedBy = "market", cascade = CascadeType.ALL)
     private List<Reward> rewards = new ArrayList<>();
 
     @OneToOne(mappedBy = "market")

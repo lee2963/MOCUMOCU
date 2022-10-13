@@ -2,14 +2,11 @@ package MOCUMOCU.project.customer;
 
 import MOCUMOCU.project.domain.Privacy;
 import MOCUMOCU.project.form.*;
-import MOCUMOCU.project.coupon.CouponService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -18,7 +15,6 @@ import java.util.List;
 public class CustomerController {
 
     private final CustomerService customerService;
-    private final CouponService couponService;
 
     @PostMapping("/signup")
     public ResponseEntity<Void> signup(@RequestBody CustomerRegisterDTO customerRegisterDTO) {
@@ -55,18 +51,5 @@ public class CustomerController {
         }
     }
 
-    @GetMapping("/{customerIdTest}/coupon")
-    public ResponseEntity<List<CouponInfoDTO>> main(@PathVariable Long customerIdTest) {
 
-        List<CouponInfoDTO> couponInfoDTOList = customerService.findAllCoupon(customerIdTest);
-
-        return new ResponseEntity<>(couponInfoDTOList, HttpStatus.OK);
-    }
-
-    @GetMapping("/reward-list")
-    public ResponseEntity<List<RewardInfoDTO>> showRewards(@RequestParam Long couponId) {
-
-        List<RewardInfoDTO> rewardInfoDTOList = couponService.findAllReward(couponId);
-        return new ResponseEntity<>(rewardInfoDTOList, HttpStatus.OK);
-    }
 }

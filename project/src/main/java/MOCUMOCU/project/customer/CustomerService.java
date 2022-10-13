@@ -1,7 +1,6 @@
 package MOCUMOCU.project.customer;
 
 import MOCUMOCU.project.domain.Privacy;
-import MOCUMOCU.project.form.CouponInfoDTO;
 import MOCUMOCU.project.form.CustomerInfoDTO;
 import MOCUMOCU.project.form.CustomerLoginDTO;
 
@@ -14,8 +13,6 @@ public interface CustomerService {
     void withdrawal(Long id);
 
     void updatePrivacy(Long id, Privacy privacy);
-
-    List<CouponInfoDTO> findAllCoupon(Long id);
 
     void updateLastDate();
 
