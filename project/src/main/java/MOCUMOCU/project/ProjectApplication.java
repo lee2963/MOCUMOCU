@@ -1,10 +1,10 @@
 package MOCUMOCU.project;
 
-import MOCUMOCU.project.customer.Customer;
-import MOCUMOCU.project.customer.CustomerService;
-import MOCUMOCU.project.customer.Gender;
-import MOCUMOCU.project.owner.Owner;
-import MOCUMOCU.project.owner.OwnerService;
+import MOCUMOCU.project.customer.entity.Customer;
+import MOCUMOCU.project.customer.service.CustomerService;
+import MOCUMOCU.project.customer.entity.Gender;
+import MOCUMOCU.project.owner.entity.Owner;
+import MOCUMOCU.project.owner.service.OwnerService;
 import javafx.util.converter.LocalDateStringConverter;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

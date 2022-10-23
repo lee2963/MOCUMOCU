@@ -1,7 +1,7 @@
 package MOCUMOCU.project.reward;
 
-import MOCUMOCU.project.market.Market;
-import MOCUMOCU.project.coupon.Coupon;
+import MOCUMOCU.project.market.entity.Market;
+import MOCUMOCU.project.coupon.entity.Coupon;
 import lombok.Getter;
 import lombok.Setter;
 
