@@ -1,16 +1,13 @@
 package MOCUMOCU.project.owner;
 
-import MOCUMOCU.project.Market.Market;
-import MOCUMOCU.project.form.MarketInfoDTO;
-import MOCUMOCU.project.form.OwnerInfoDTO;
-import MOCUMOCU.project.form.OwnerLoginDTO;
-import MOCUMOCU.project.domain.Privacy;
-import MOCUMOCU.project.Market.MarketRepository;
+import MOCUMOCU.project.owner.form.OwnerInfoDTO;
+import MOCUMOCU.project.owner.form.OwnerLoginDTO;
+import MOCUMOCU.project.Privacy;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -20,7 +17,6 @@ import java.util.List;
 public class OwnerServiceImpl implements OwnerService {
 
     private final OwnerRepository ownerRepository;
-    private final MarketRepository marketRepository;
 
     @Override
     public Long join(Owner owner) {
@@ -38,26 +34,6 @@ public class OwnerServiceImpl implements OwnerService {
     public void updatePrivacy(Long id, Privacy privacy) {
         Owner findOwner = ownerRepository.findOne(id);
         findOwner.setPrivacy(privacy);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<MarketInfoDTO> findAllMarket(Long id) {
-
-        List<Market> findMarkets = marketRepository.findByOwnerId(id);
-        List<MarketInfoDTO> marketInfoDTOList = new ArrayList<>();
-
-        for (Market findMarket : findMarkets) {
-            MarketInfoDTO marketInfoDTO = new MarketInfoDTO();
-
-            marketInfoDTO.setName(findMarket.getMarketName());
-            marketInfoDTO.setPhoneNum(findMarket.getMarketPhoneNum());
-            marketInfoDTO.setId(findMarket.getId());
-
-            marketInfoDTOList.add(marketInfoDTO);
-        }
-
-        return marketInfoDTOList;
     }
 
     @Override

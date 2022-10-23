@@ -1,11 +1,8 @@
 package MOCUMOCU.project.owner;
 
-import MOCUMOCU.project.form.MarketInfoDTO;
-import MOCUMOCU.project.form.OwnerInfoDTO;
-import MOCUMOCU.project.form.OwnerLoginDTO;
-import MOCUMOCU.project.domain.Privacy;
-
-import java.util.List;
+import MOCUMOCU.project.owner.form.OwnerInfoDTO;
+import MOCUMOCU.project.owner.form.OwnerLoginDTO;
+import MOCUMOCU.project.Privacy;
 
 public interface OwnerService {
 
@@ -14,8 +11,6 @@ public interface OwnerService {
     void withdrawal(Long id);
 
     void updatePrivacy(Long id, Privacy privacy);
-
-    List<MarketInfoDTO> findAllMarket(Long id);
 
     boolean login(OwnerLoginDTO ownerLoginDTO);
 

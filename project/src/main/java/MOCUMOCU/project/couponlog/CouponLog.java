@@ -1,13 +1,15 @@
 package MOCUMOCU.project.couponlog;
 
-import MOCUMOCU.project.Market.Market;
+import MOCUMOCU.project.market.Market;
 import MOCUMOCU.project.coupon.Coupon;
 import MOCUMOCU.project.customer.Customer;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+
 @Entity
 @Getter @Setter
 public class CouponLog {
@@ -16,8 +18,15 @@ public class CouponLog {
     @Column(name = "couponlog_id")
     private Long id;
 
-    private LocalDateTime nowTime;
-    private int curStamp;
+    private int year;
+    private int month;
+    private int day;
+    private int hour;
+    private int minute;
+    private String dayOfWeek;
+
+    private int usedStamp;
+
     private String rewardContent;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -33,12 +42,17 @@ public class CouponLog {
     private Coupon coupon;
 
     public void setLog(Coupon coupon, int stamp) {
-        CouponLog newCouponLog = new CouponLog();
+        LocalDateTime now = LocalDateTime.now();
 
-        newCouponLog.setNowTime(LocalDateTime.now());
-        newCouponLog.setCoupon(coupon);
-        newCouponLog.setMarket(coupon.getMarket());
-        newCouponLog.setCustomer(coupon.getCustomer());
-        newCouponLog.setCurStamp(stamp);
+        this.year = now.getYear();
+        this.month = now.getMonthValue();
+        this.day = now.getDayOfMonth();
+        this.hour = now.getHour();
+        this.minute = now.getMinute();
+        this.dayOfWeek = now.getDayOfWeek().name();
+        this.coupon = coupon;
+        this.market = coupon.getMarket();
+        this.customer = coupon.getCustomer();
+        this.usedStamp = stamp;
     }
 }

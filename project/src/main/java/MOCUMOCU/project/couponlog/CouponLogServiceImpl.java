@@ -13,10 +13,17 @@ import java.util.List;
 public class CouponLogServiceImpl implements CouponLogService{
     private final CouponLogRepository couponLogRepository;
 
+
+    @Override
+    public void saveLog(CouponLog couponLog) {
+        couponLogRepository.save(couponLog);
+    }
+
     @Override
     public List<CouponLog> findAllCouponLog(Long customerId) {
 
         List<CouponLog> couponLogs = couponLogRepository.findByCustomerId(customerId);
+
 
         if (couponLogs.isEmpty()) {
             return null;

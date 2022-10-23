@@ -1,11 +1,13 @@
 package MOCUMOCU.project.coupon;
 
+import MOCUMOCU.project.couponlog.CouponLog;
+import MOCUMOCU.project.couponlog.CouponLogRepository;
 import MOCUMOCU.project.customer.CustomerRepository;
-import MOCUMOCU.project.form.CouponInfoDTO;
-import MOCUMOCU.project.form.RewardInfoDTO;
-import MOCUMOCU.project.form.SaveStampDTO;
-import MOCUMOCU.project.form.UseStampDTO;
-import MOCUMOCU.project.Market.MarketRepository;
+import MOCUMOCU.project.coupon.form.CouponInfoDTO;
+import MOCUMOCU.project.reward.form.RewardInfoDTO;
+import MOCUMOCU.project.coupon.form.SaveStampDTO;
+import MOCUMOCU.project.coupon.form.UseStampDTO;
+import MOCUMOCU.project.market.MarketRepository;
 import MOCUMOCU.project.reward.Reward;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,20 +24,17 @@ public class CouponServiceImpl implements CouponService {
     private final CouponRepository couponRepository;
     private final MarketRepository marketRepository;
     private final CustomerRepository customerRepository;
-
-    @Override
-    public Long addCoupon(Coupon coupon) {
-        couponRepository.save(coupon);
-
-        return coupon.getId();
-    }
+    private final CouponLogRepository couponLogRepository;
 
     @Override
     public boolean useStamp(UseStampDTO useStampDTO) {
         Coupon findCoupon = couponRepository.findOne(useStampDTO.getCouponId());
+        CouponLog newCouponLog = new CouponLog();
 
         if(findCoupon.getAmountStamp() - useStampDTO.getCouponRequire() > 0 ){
             findCoupon.setAmountStamp(findCoupon.getAmountStamp() - useStampDTO.getCouponRequire());
+            newCouponLog.setLog(findCoupon, useStampDTO.getCouponRequire());
+            couponLogRepository.save(newCouponLog);
             return true;
         }
         return false;
@@ -46,6 +45,7 @@ public class CouponServiceImpl implements CouponService {
 
         Coupon findCoupon = couponRepository
                 .findByCustomerIdAndMarketId(saveStampDTO.getCustomerId(), saveStampDTO.getMarketId());
+        CouponLog newCouponLog = new CouponLog();
 
         if (findCoupon == null) {
             Coupon newCoupon = new Coupon();
@@ -54,9 +54,14 @@ public class CouponServiceImpl implements CouponService {
                     marketRepository.findOne(saveStampDTO.getMarketId()), saveStampDTO.getAmount());
 
              couponRepository.save(newCoupon);
+
+             newCouponLog.setLog(newCoupon, saveStampDTO.getAmount());
         } else{
             findCoupon.setAmountStamp(findCoupon.getAmountStamp() + saveStampDTO.getAmount());
+            newCouponLog.setLog(findCoupon, saveStampDTO.getAmount());
         }
+
+        couponLogRepository.save(newCouponLog);
     }
 
     @Override

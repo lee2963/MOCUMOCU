@@ -1,9 +1,10 @@
 package MOCUMOCU.project.customer;
 
 import MOCUMOCU.project.couponlog.CouponLog;
-import MOCUMOCU.project.domain.CustomizeCustomer;
+import MOCUMOCU.project.customizeCustomer.CustomizeCustomer;
 import MOCUMOCU.project.coupon.Coupon;
-import MOCUMOCU.project.domain.Privacy;
+import MOCUMOCU.project.Privacy;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,9 +27,11 @@ public class Customer {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    private int attendanceDate; //연속 출석 일수
     private int userPoint; //보유 포인트
+
     private String birthDate;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate lastDate; //마지막 접속 날짜 저장
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
@@ -40,7 +43,4 @@ public class Customer {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<CouponLog> couponLogs = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "couponlog_id")
-    private CouponLog couponLog;
 }

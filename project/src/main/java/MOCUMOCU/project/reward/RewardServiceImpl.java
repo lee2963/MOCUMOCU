@@ -1,10 +1,14 @@
 package MOCUMOCU.project.reward;
 
-import MOCUMOCU.project.form.RewardAddDTO;
-import MOCUMOCU.project.Market.MarketRepository;
+import MOCUMOCU.project.reward.form.RewardAddDTO;
+import MOCUMOCU.project.market.MarketRepository;
+import MOCUMOCU.project.reward.form.RewardOwnerDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -35,5 +39,25 @@ public class RewardServiceImpl implements RewardService {
         Reward updateReward = rewardRepository.findOne(reward.getId());
         updateReward.setRewardContent(reward.getRewardContent());
         updateReward.setNeedAmount(reward.getNeedAmount());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<RewardOwnerDTO> findAllReward(Long id) {
+
+        List<Reward> findRewards = rewardRepository.findByMarketId(id);
+        List<RewardOwnerDTO> rewardOwnerDTOList = new ArrayList<>();
+
+        for (Reward findReward : findRewards) {
+            RewardOwnerDTO rewardOwnerDTO = new RewardOwnerDTO();
+
+            rewardOwnerDTO.setId(findReward.getId());
+            rewardOwnerDTO.setReward(findReward.getRewardContent());
+            rewardOwnerDTO.setCouponRequire(findReward.getNeedAmount());
+
+            rewardOwnerDTOList.add(rewardOwnerDTO);
+        }
+
+        return rewardOwnerDTOList;
     }
 }

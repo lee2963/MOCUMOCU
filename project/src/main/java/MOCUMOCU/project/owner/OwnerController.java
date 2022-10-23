@@ -2,18 +2,19 @@ package MOCUMOCU.project.owner;
 
 import MOCUMOCU.project.customer.Customer;
 import MOCUMOCU.project.customer.CustomerService;
-import MOCUMOCU.project.domain.Privacy;
-import MOCUMOCU.project.form.*;
-import MOCUMOCU.project.coupon.CouponService;
-import MOCUMOCU.project.Market.MarketService;
-import MOCUMOCU.project.reward.RewardService;
+import MOCUMOCU.project.Privacy;
+import MOCUMOCU.project.customer.form.CustomerSendDTO;
+import MOCUMOCU.project.customer.form.PhoneNumDTO;
+import MOCUMOCU.project.market.MarketService;
+import MOCUMOCU.project.owner.form.OwnerInfoDTO;
+import MOCUMOCU.project.owner.form.OwnerLoginDTO;
+import MOCUMOCU.project.owner.form.OwnerRegisterDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 @RestController
 @RequestMapping("/owner")
@@ -22,8 +23,7 @@ public class OwnerController {
 
     private final OwnerService ownerService;
     private final MarketService marketService;
-    private final RewardService rewardService;
-    private final CouponService couponService;
+
     private final CustomerService customerService;
 
     @PostMapping("/signup")
@@ -53,65 +53,12 @@ public class OwnerController {
         }
     }
 
-    @PostMapping("/store")
-    public ResponseEntity<Void> addMarket(@RequestBody MarketAddDTO marketAddDTO) {
-        marketService.addMarket(marketAddDTO);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 
-    @GetMapping("/{ownerId}/market-list")
-    public ResponseEntity<List<MarketInfoDTO>> showMarkets(@PathVariable Long ownerId) {
-
-        List<MarketInfoDTO> findMarkets = ownerService.findAllMarket(ownerId);
-        List<ActivityData> activityData = new ArrayList<>();
-        ActivityData newActivityData = new ActivityData();
-        activityData.add(newActivityData);
-
-
-        for (MarketInfoDTO findMarket : findMarkets) {
-            findMarket.setRewardList(marketService.findAllReward(findMarket.getId()));
-            findMarket.setActivityData(activityData);
-        }
-
-        return new ResponseEntity<>(findMarkets, HttpStatus.OK);
-    }
 
     @DeleteMapping("/store/{storeId}")
     public ResponseEntity<Void> removeMarket(@PathVariable Long storeId) {
         marketService.removeMarket(storeId);
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PostMapping("/store/reward")
-    public ResponseEntity<Void> saveReward(@RequestBody RewardAddDTO rewardAddDTO) {
-        rewardService.addReward(rewardAddDTO);
-
-        return new ResponseEntity<>(HttpStatus.OK);
-
-    }
-
-    @DeleteMapping("/{ownerId}/store/{marketId}/reward/{rewardId}")
-    public ResponseEntity<Void> removeReward(@PathVariable Long rewardId) {
-        rewardService.removeReward(rewardId);
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PostMapping("/stamp")
-    public ResponseEntity<Void> saveStamp(@RequestBody SaveStampDTO saveStampDTO) {
-        couponService.earnStamp(saveStampDTO);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PatchMapping("/stamp")
-    public ResponseEntity<Void> useStamp(@RequestBody UseStampDTO useStampDTO) {
-        if(couponService.useStamp(useStampDTO)){
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else{
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-
     }
 
     @PostMapping("/phoneNum")
@@ -129,14 +76,4 @@ public class OwnerController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
-    @GetMapping("{marketId}/reward-list")
-    public ResponseEntity<List<RewardOwnerDTO>> rewardList(@PathVariable Long marketId) {
-
-        List<RewardOwnerDTO> rewardOwnerDTOList = marketService.findAllReward(marketId);
-
-        return new ResponseEntity<>(rewardOwnerDTOList, HttpStatus.OK);
-    }
-
-
 }

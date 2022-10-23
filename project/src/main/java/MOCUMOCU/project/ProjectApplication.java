@@ -3,13 +3,15 @@ package MOCUMOCU.project;
 import MOCUMOCU.project.customer.Customer;
 import MOCUMOCU.project.customer.CustomerService;
 import MOCUMOCU.project.customer.Gender;
-import MOCUMOCU.project.domain.Privacy;
 import MOCUMOCU.project.owner.Owner;
 import MOCUMOCU.project.owner.OwnerService;
+import javafx.util.converter.LocalDateStringConverter;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+
+import java.time.LocalDate;
 
 @SpringBootApplication
 public class ProjectApplication {
@@ -36,6 +38,7 @@ public class ProjectApplication {
 			Customer customer = new Customer();
 			customer.setGender(Gender.MALE);
 			customer.setBirthDate("1997-08-20");
+			customer.setLastDate(LocalDate.now());
 			privacy.setName("여민수12");
 			privacy.setPassword("1234qwer!");
 			privacy.setEmail("yeo@customer.com");

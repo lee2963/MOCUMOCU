@@ -1,6 +1,6 @@
 package MOCUMOCU.project.reward;
 
-import MOCUMOCU.project.Market.Market;
+import MOCUMOCU.project.market.Market;
 import MOCUMOCU.project.coupon.Coupon;
 import lombok.Getter;
 import lombok.Setter;

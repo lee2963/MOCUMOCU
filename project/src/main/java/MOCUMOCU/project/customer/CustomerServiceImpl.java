@@ -1,12 +1,13 @@
 package MOCUMOCU.project.customer;
 
-import MOCUMOCU.project.domain.Privacy;
-import MOCUMOCU.project.form.CustomerInfoDTO;
-import MOCUMOCU.project.form.CustomerLoginDTO;
+import MOCUMOCU.project.customer.form.ChangePhoneNumDTO;
+import MOCUMOCU.project.customer.form.CustomerInfoDTO;
+import MOCUMOCU.project.customer.form.CustomerLoginDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -29,26 +30,27 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void updatePrivacy(Long id, Privacy privacy) {
-        Customer findCustomer = customerRepository.findOne(id);
-        findCustomer.setPrivacy(privacy);
+    public void updatePhoneNum(ChangePhoneNumDTO changePhoneNumDTO) {
+        Customer findCustomer = customerRepository.findOne(changePhoneNumDTO.getId());
+        findCustomer.getPrivacy().setPhoneNum(changePhoneNumDTO.getPhoneNum());
     }
 
     @Override
-    public void updateLastDate() {
-
+    public boolean updateLastDate(Long id) {
+        Customer findCustomer = customerRepository.findOne(id);
+        return findCustomer.getLastDate().isBefore(LocalDate.now());
     }
 
     @Override
     @Transactional(readOnly = true)
     public boolean login(CustomerLoginDTO customerLoginDTO) {
 
-        List<Customer> findCustomer = customerRepository.findByEmail(customerLoginDTO.getCustomerEmail());
+        List<Customer> findCustomers = customerRepository.findByEmail(customerLoginDTO.getCustomerEmail());
 
-        if (findCustomer.isEmpty()) {
+        if (findCustomers.isEmpty()) {
             return false;
         } else {
-            return findCustomer.get(0).getPrivacy().getPassword().equals(customerLoginDTO.getCustomerPassword());
+            return findCustomers.get(0).getPrivacy().getPassword().equals(customerLoginDTO.getCustomerPassword());
         }
     }
 
@@ -80,9 +82,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public boolean isPhoneNumExist(String phoneNum) {
-        List<Customer> findCustomer = customerRepository.findByPhoneNum(phoneNum);
+        List<Customer> findCustomers = customerRepository.findByPhoneNum(phoneNum);
 
-        return !findCustomer.isEmpty();
+        return !findCustomers.isEmpty();
 
     }
 

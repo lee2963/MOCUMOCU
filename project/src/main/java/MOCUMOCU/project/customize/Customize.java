@@ -2,7 +2,7 @@ package MOCUMOCU.project.customize;
 
 
 import MOCUMOCU.project.coupon.Coupon;
-import MOCUMOCU.project.domain.CustomizeCustomer;
+import MOCUMOCU.project.customizeCustomer.CustomizeCustomer;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,15 +15,19 @@ import java.util.List;
 public class Customize {
 
     @Id @GeneratedValue
-    @Column(name = "board_id")
+    @Column(name = "customize_id")
     private Long id;
 
     private int customizePoint;
-    private String customizeImage;
-    private String customizeName;
-    private boolean type; // 1 쿠폰 0 스탬프
 
-    @OneToMany(mappedBy = "cutomizeCustom", cascade = CascadeType.ALL)
+    private String customizeImage;
+
+    private String customizeName;
+
+    @Enumerated(EnumType.STRING)
+    private Type type;
+
+    @OneToMany(mappedBy = "customize", cascade = CascadeType.ALL)
     private List<CustomizeCustomer> customizeCustomers = new ArrayList<>();
 
     @OneToOne(mappedBy = "customize")

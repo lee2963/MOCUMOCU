@@ -1,10 +1,8 @@
 package MOCUMOCU.project.customer;
 
-import MOCUMOCU.project.domain.Privacy;
-import MOCUMOCU.project.form.CustomerInfoDTO;
-import MOCUMOCU.project.form.CustomerLoginDTO;
-
-import java.util.List;
+import MOCUMOCU.project.customer.form.ChangePhoneNumDTO;
+import MOCUMOCU.project.customer.form.CustomerInfoDTO;
+import MOCUMOCU.project.customer.form.CustomerLoginDTO;
 
 public interface CustomerService {
 
@@ -12,9 +10,9 @@ public interface CustomerService {
 
     void withdrawal(Long id);
 
-    void updatePrivacy(Long id, Privacy privacy);
+    void updatePhoneNum(ChangePhoneNumDTO changePhoneNumDTO);
 
-    void updateLastDate();
+    boolean updateLastDate(Long id);
 
     boolean login(CustomerLoginDTO customerLoginDTO);
 
