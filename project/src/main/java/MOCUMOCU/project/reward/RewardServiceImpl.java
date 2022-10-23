@@ -1,7 +1,7 @@
 package MOCUMOCU.project.reward;
 
 import MOCUMOCU.project.reward.form.RewardAddDTO;
-import MOCUMOCU.project.market.MarketRepository;
+import MOCUMOCU.project.market.repository.MarketRepository;
 import MOCUMOCU.project.reward.form.RewardOwnerDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
