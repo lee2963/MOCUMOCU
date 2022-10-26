@@ -30,6 +30,4 @@ public class Customize {
     @OneToMany(mappedBy = "customize", cascade = CascadeType.ALL)
     private List<CustomizeCustomer> customizeCustomers = new ArrayList<>();
 
-    @OneToOne(mappedBy = "customize")
-    private Coupon coupon;
 }

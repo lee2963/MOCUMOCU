@@ -23,10 +23,7 @@ public class CouponLog {
     private int hour;
     private int minute;
     private String dayOfWeek;
-
     private int usedStamp;
-
-    private String rewardContent;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")

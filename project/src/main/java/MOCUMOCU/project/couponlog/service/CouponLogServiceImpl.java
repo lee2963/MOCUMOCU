@@ -1,12 +1,11 @@
 package MOCUMOCU.project.couponlog.service;
 
-import MOCUMOCU.project.couponlog.dto.DayOfWeekAnalysisDTO;
-import MOCUMOCU.project.couponlog.dto.GenderAnalysisDTO;
-import MOCUMOCU.project.couponlog.dto.MonthAnalysisDTO;
-import MOCUMOCU.project.couponlog.dto.TimeAnalysisDTO;
+import MOCUMOCU.project.couponlog.dto.*;
 import MOCUMOCU.project.couponlog.entity.CouponLog;
 import MOCUMOCU.project.couponlog.repository.CouponLogRepository;
+import MOCUMOCU.project.couponlog.repository.CouponLogRepositoryInter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +20,8 @@ import java.util.List;
 public class CouponLogServiceImpl implements CouponLogService{
     private final CouponLogRepository couponLogRepository;
 
+    private final CouponLogRepositoryInter couponLogRepositoryInter;
+
 
     @Override
     public void saveLog(CouponLog couponLog) {
@@ -28,17 +29,9 @@ public class CouponLogServiceImpl implements CouponLogService{
     }
 
     @Override
-    public List<CouponLog> findAllCouponLog(Long customerId) {
+    public List<CouponLogDTO> findAllCouponLog(Long customerId, Pageable pageable) {
 
-        List<CouponLog> couponLogs = couponLogRepository.findByCustomerId(customerId);
-
-
-        if (couponLogs.isEmpty()) {
-            return null;
-        } else{
-            return couponLogs;
-        }
-
+        return couponLogRepositoryInter.findByCustomerId(customerId, pageable);
     }
 
     @Override

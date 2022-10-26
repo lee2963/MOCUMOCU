@@ -24,12 +24,14 @@ public class CouponController {
     @PostMapping("/stamp")
     public ResponseEntity<Void> saveStamp(@RequestBody SaveStampDTO saveStampDTO) {
         couponService.earnStamp(saveStampDTO);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PatchMapping("/stamp")
     public ResponseEntity<Void> useStamp(@RequestBody UseStampDTO useStampDTO) {
         if(couponService.useStamp(useStampDTO)){
+            log.info("use = " + useStampDTO.getCouponRequire());
             return new ResponseEntity<>(HttpStatus.OK);
         } else{
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

@@ -1,5 +1,6 @@
 package MOCUMOCU.project.couponlog.repository;
 
+import MOCUMOCU.project.couponlog.dto.CouponLogDTO;
 import MOCUMOCU.project.couponlog.entity.CouponLog;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
