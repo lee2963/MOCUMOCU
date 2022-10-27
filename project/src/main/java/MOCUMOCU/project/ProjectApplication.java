@@ -5,13 +5,12 @@ import MOCUMOCU.project.customer.service.CustomerService;
 import MOCUMOCU.project.customer.entity.Gender;
 import MOCUMOCU.project.owner.entity.Owner;
 import MOCUMOCU.project.owner.service.OwnerService;
-import javafx.util.converter.LocalDateStringConverter;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.time.LocalDate;
+
 
 @SpringBootApplication
 public class ProjectApplication {
@@ -38,7 +37,6 @@ public class ProjectApplication {
 			Customer customer = new Customer();
 			customer.setGender(Gender.MALE);
 			customer.setBirthDate("1997-08-20");
-			customer.setLastDate(LocalDate.now());
 			privacy.setName("여민수12");
 			privacy.setPassword("1234qwer!");
 			privacy.setEmail("yeo@customer.com");

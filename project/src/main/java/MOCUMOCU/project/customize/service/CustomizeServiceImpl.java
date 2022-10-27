@@ -2,7 +2,6 @@ package MOCUMOCU.project.customize.service;
 
 import MOCUMOCU.project.customize.entity.Customize;
 import MOCUMOCU.project.customize.repository.CustomizeRepository;
-import com.sun.codemodel.internal.JType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
