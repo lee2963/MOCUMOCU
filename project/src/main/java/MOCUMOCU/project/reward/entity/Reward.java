@@ -1,4 +1,4 @@
-package MOCUMOCU.project.reward;
+package MOCUMOCU.project.reward.entity;
 
 import MOCUMOCU.project.market.entity.Market;
 import MOCUMOCU.project.coupon.entity.Coupon;

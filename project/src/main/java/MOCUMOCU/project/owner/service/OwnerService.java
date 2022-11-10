@@ -11,9 +11,17 @@ public interface OwnerService {
 
     void withdrawal(Long id);
 
-    void updatePrivacy(Long id, Privacy privacy);
+    void updatePhoneNum(Long id, String phoneNum);
+    void updatePassword(Long id, String password);
+
+    boolean authPassword(String password, Long id);
 
     boolean login(OwnerLoginDTO ownerLoginDTO);
 
     OwnerInfoDTO findOwnerByEmail(String email);
+
+    String findEmail(String customerName, String phoneNum);
+
+    String findPassword(String email);
+
 }

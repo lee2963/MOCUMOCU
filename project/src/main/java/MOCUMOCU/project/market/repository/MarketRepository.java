@@ -25,6 +25,11 @@ public class MarketRepository {
         return em.find(Market.class, id);
     }
 
+    public List<Market> findAllMarket(){
+        return em.createQuery("select m from Market m", Market.class)
+                .getResultList();
+    }
+
     public List<Market> findByOwnerId(Long ownerId) {
 
         return em.createQuery("select m from Market m where m.owner.id =: ownerId",Market.class)

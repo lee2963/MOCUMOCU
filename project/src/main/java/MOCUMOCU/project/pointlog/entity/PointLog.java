@@ -19,12 +19,15 @@ public class PointLog {
     @Column(name = "pointlog_id")
     private Long id;
 
+    private int point;
     private int year;
     private int month;
     private int day;
     private int hour;
     private int minute;
     private String dayOfWeek;
+
+    private Type type;
 
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -44,6 +47,7 @@ public class PointLog {
 
         this.customize = customize;
         this.customer = customer;
+        this.point = -customize.getCustomizePoint();
         this.year = now.getYear();
         this.month = now.getMonthValue();
         this.day = now.getDayOfMonth();

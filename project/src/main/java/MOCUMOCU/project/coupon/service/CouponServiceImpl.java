@@ -1,16 +1,19 @@
 package MOCUMOCU.project.coupon.service;
 
+import MOCUMOCU.project.coupon.dto.SaveStampWithDayDTO;
 import MOCUMOCU.project.coupon.entity.Coupon;
 import MOCUMOCU.project.coupon.repository.CouponRepository;
 import MOCUMOCU.project.couponlog.entity.CouponLog;
 import MOCUMOCU.project.couponlog.repository.CouponLogRepository;
 import MOCUMOCU.project.customer.repository.CustomerRepository;
 import MOCUMOCU.project.coupon.dto.CouponInfoDTO;
+import MOCUMOCU.project.customizeCustomer.entity.CustomizeCustomer;
+import MOCUMOCU.project.customizeCustomer.repository.CustomizeCustomerRepository;
 import MOCUMOCU.project.reward.form.RewardInfoDTO;
 import MOCUMOCU.project.coupon.dto.SaveStampDTO;
 import MOCUMOCU.project.coupon.dto.UseStampDTO;
 import MOCUMOCU.project.market.repository.MarketRepository;
-import MOCUMOCU.project.reward.Reward;
+import MOCUMOCU.project.reward.entity.Reward;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,15 +30,16 @@ public class CouponServiceImpl implements CouponService {
     private final MarketRepository marketRepository;
     private final CustomerRepository customerRepository;
     private final CouponLogRepository couponLogRepository;
+    private final CustomizeCustomerRepository customizeCustomerRepository;
 
     @Override
     public boolean useStamp(UseStampDTO useStampDTO) {
         Coupon findCoupon = couponRepository.findOne(useStampDTO.getCouponId());
         CouponLog newCouponLog = new CouponLog();
 
-        if(findCoupon.getAmountStamp() - useStampDTO.getCouponRequire() > 0 ){
+        if(findCoupon.getAmountStamp() - useStampDTO.getCouponRequire() >= 0 ){
             findCoupon.setAmountStamp(findCoupon.getAmountStamp() - useStampDTO.getCouponRequire());
-            newCouponLog.setLog(findCoupon, useStampDTO.getCouponRequire());
+            newCouponLog.setLog(findCoupon, -useStampDTO.getCouponRequire());
             couponLogRepository.save(newCouponLog);
             return true;
         }
@@ -78,6 +82,8 @@ public class CouponServiceImpl implements CouponService {
             couponInfoDTO.setCouponId(myCoupon.getId());
             couponInfoDTO.setMarketName(myCoupon.getMarket().getMarketName());
             couponInfoDTO.setStampAmount(myCoupon.getAmountStamp());
+            couponInfoDTO.setBoardUrl(myCoupon.getBoardUrl());
+            couponInfoDTO.setStampUrl(myCoupon.getStampUrl());
 
             couponInfoDTOList.add(couponInfoDTO);
         }
@@ -97,6 +103,54 @@ public class CouponServiceImpl implements CouponService {
         }
 
         return rewardInfoDTOList;
+    }
+
+    @Override
+    public void setCustomizeImage(Long couponId, Long customizeCustomerId, String type) {
+
+        Coupon findCoupon = couponRepository.findOne(couponId);
+
+        if(customizeCustomerId == -1){
+            if(type.equals("stamp")){
+                findCoupon.setStampUrl(null);
+            } else if(type.equals("board")){
+                findCoupon.setBoardUrl(null);
+            }
+        } else {
+
+            CustomizeCustomer findCustomizeCustomer = customizeCustomerRepository.findOne(customizeCustomerId);
+
+            if (type.equals("stamp")) {
+                findCoupon.setStampUrl(findCustomizeCustomer.getCustomize().getSmallImageUrl());
+            } else if (type.equals("board")) {
+                findCoupon.setBoardUrl(findCustomizeCustomer.getCustomize().getBigImageUrl());
+            }
+        }
+    }
+
+    @Override
+    public void earnStampSetDayTogether(SaveStampWithDayDTO saveStampWithDayDTO) {
+        Coupon findCoupon = couponRepository
+                .findByCustomerIdAndMarketId(saveStampWithDayDTO.getCustomerId(), saveStampWithDayDTO.getMarketId());
+        CouponLog newCouponLog = new CouponLog();
+
+        if (findCoupon == null) {
+            Coupon newCoupon = new Coupon();
+
+            newCoupon.setCoupon(customerRepository.findOne(saveStampWithDayDTO.getCustomerId()),
+                    marketRepository.findOne(saveStampWithDayDTO.getMarketId()), saveStampWithDayDTO.getAmount());
+
+            couponRepository.save(newCoupon);
+
+            newCouponLog.setLogWithTime(newCoupon, saveStampWithDayDTO.getAmount(), saveStampWithDayDTO.getYear(),
+                    saveStampWithDayDTO.getMonth(), saveStampWithDayDTO.getDay(), saveStampWithDayDTO.getHour(), saveStampWithDayDTO.getMinute());
+        } else{
+            findCoupon.setAmountStamp(findCoupon.getAmountStamp() + saveStampWithDayDTO.getAmount());
+            newCouponLog.setLogWithTime(findCoupon, saveStampWithDayDTO.getAmount(), saveStampWithDayDTO.getYear(),
+                    saveStampWithDayDTO.getMonth(), saveStampWithDayDTO.getDay(), saveStampWithDayDTO.getHour(), saveStampWithDayDTO.getMinute());
+        }
+
+        couponLogRepository.save(newCouponLog);
     }
 
 

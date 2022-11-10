@@ -20,9 +20,9 @@ public class Customize {
 
     private int customizePoint;
 
-    private String customizeImage;
+    private String bigImageUrl;
 
-    private String customizeName;
+    private String smallImageUrl;
 
     @Enumerated(EnumType.STRING)
     private Type type;

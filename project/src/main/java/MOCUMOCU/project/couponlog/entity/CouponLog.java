@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter @Setter
@@ -46,6 +48,21 @@ public class CouponLog {
         this.hour = now.getHour();
         this.minute = now.getMinute();
         this.dayOfWeek = now.getDayOfWeek().name();
+        this.coupon = coupon;
+        this.market = coupon.getMarket();
+        this.customer = coupon.getCustomer();
+        this.usedStamp = stamp;
+    }
+
+    public void setLogWithTime(Coupon coupon, int stamp, int year, int month, int day, int hour, int minute) {
+        LocalDate date = LocalDate.of(year,month,day);
+
+        this.year = year;
+        this.month = month;
+        this.day = day;
+        this.hour = hour;
+        this.minute = minute;
+        this.dayOfWeek = date.getDayOfWeek().name();
         this.coupon = coupon;
         this.market = coupon.getMarket();
         this.customer = coupon.getCustomer();

@@ -1,5 +1,6 @@
 package MOCUMOCU.project.owner.repository;
 
+import MOCUMOCU.project.customer.entity.Customer;
 import MOCUMOCU.project.owner.entity.Owner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -29,6 +30,12 @@ public class OwnerRepository {
     public List<Owner> findByEmail(String email){
         return em.createQuery("select o from Owner o where o.privacy.email = :email", Owner.class)
                 .setParameter("email", email)
+                .getResultList();
+    }
+
+    public List<Owner> findByPhoneNum(String phoneNum) {
+        return em.createQuery("select o from Owner o where o.privacy.phoneNum = :phoneNum", Owner.class)
+                .setParameter("phoneNum", phoneNum)
                 .getResultList();
     }
 

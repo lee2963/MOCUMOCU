@@ -4,7 +4,7 @@ import MOCUMOCU.project.customizeCustomer.entity.CustomizeCustomer;
 import MOCUMOCU.project.market.entity.Market;
 import MOCUMOCU.project.couponlog.entity.CouponLog;
 import MOCUMOCU.project.customer.entity.Customer;
-import MOCUMOCU.project.reward.Reward;
+import MOCUMOCU.project.reward.entity.Reward;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +21,9 @@ public class Coupon {
     private Long id;
 
     private int amountStamp;
+
+    private String stampUrl;
+    private String boardUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")

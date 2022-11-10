@@ -1,5 +1,6 @@
 package MOCUMOCU.project.customizeCustomer.repository;
 
+import MOCUMOCU.project.customize.entity.Type;
 import MOCUMOCU.project.customizeCustomer.entity.CustomizeCustomer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -32,8 +33,9 @@ public class CustomizeCustomerRepository {
                 .getResultList();
     }
 
-    public List<CustomizeCustomer> findByType(String type) {
-        return em.createQuery("select c from CustomizeCustomer c where c.customize.type = :type", CustomizeCustomer.class)
+    public List<CustomizeCustomer> findByType(Long customerId, Type type) {
+        return em.createQuery("select c from CustomizeCustomer c where c.customer.id = :customerId and c.customize.type = :type", CustomizeCustomer.class)
+                .setParameter("customerId", customerId)
                 .setParameter("type", type)
                 .getResultList();
     }

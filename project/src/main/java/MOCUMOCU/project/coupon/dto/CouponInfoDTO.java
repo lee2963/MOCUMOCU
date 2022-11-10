@@ -12,5 +12,8 @@ public class CouponInfoDTO {
 
     private int stampAmount;
 
+    private String boardUrl;
+
+    private String stampUrl;
 
 }

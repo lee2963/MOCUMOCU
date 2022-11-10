@@ -6,11 +6,14 @@ import lombok.Setter;
 @Getter @Setter
 public class GenderAnalysisDTO {
 
-    private String gender;
-    private long count;
+    private String placement;
 
-    public void setGenderAnalysis(String gender, long count) {
-        this.gender = gender;
-        this.count = count;
+    private int x;
+    private long y;
+
+    public void setGenderAnalysis(String placement, int x, long y) {
+        this.placement = placement;
+        this.x = x;
+        this.y = y;
     }
 }

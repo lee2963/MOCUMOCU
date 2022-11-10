@@ -13,5 +13,4 @@ public class CustomerRegisterDTO {
     private String customerCheckPassword;
     private String customerBirth;
     private String customerGender;
-
 }

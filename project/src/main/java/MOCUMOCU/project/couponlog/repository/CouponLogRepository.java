@@ -36,7 +36,7 @@ public class CouponLogRepository {
                 .setParameter("marketId", marketId)
                 .setParameter("year", year)
                 .setParameter("month", month)
-                .setParameter("month", day)
+                .setParameter("day", day)
                 .getResultList();
     }
 
@@ -45,7 +45,7 @@ public class CouponLogRepository {
                 .setParameter("marketId", marketId)
                 .setParameter("year", year)
                 .setParameter("month", month)
-                .setParameter("month", day)
+                .setParameter("day", day)
                 .getSingleResult();
     }
 
@@ -53,6 +53,15 @@ public class CouponLogRepository {
         return em.createQuery("select c from CouponLog c where c.market.id = :marketId and c.year = :year", CouponLog.class)
                 .setParameter("marketId", marketId)
                 .setParameter("year", year)
+                .getResultList();
+    }
+
+    public List<CouponLog> findByMarketIdAndDay(Long marketId, int year, int month, int day) {
+        return em.createQuery("select c from CouponLog c where c.market.id = :marketId and c.year = :year and c.month= :month and c.day = :day", CouponLog.class)
+                .setParameter("marketId", marketId)
+                .setParameter("year", year)
+                .setParameter("month", month)
+                .setParameter("day", day)
                 .getResultList();
     }
 }

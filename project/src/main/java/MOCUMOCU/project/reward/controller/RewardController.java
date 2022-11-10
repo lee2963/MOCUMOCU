@@ -1,6 +1,8 @@
-package MOCUMOCU.project.reward;
+package MOCUMOCU.project.reward.controller;
 
+import MOCUMOCU.project.reward.service.RewardServiceImpl;
 import MOCUMOCU.project.reward.form.RewardAddDTO;
+import MOCUMOCU.project.reward.form.RewardCustomerDTO;
 import MOCUMOCU.project.reward.form.RewardOwnerDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,12 +35,21 @@ public class RewardController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("{marketId}/reward-list")
+    @GetMapping("/{marketId}/reward-list")
     public ResponseEntity<List<RewardOwnerDTO>> rewardList(@PathVariable Long marketId) {
-
+        log.info("marketId={}", marketId);
         List<RewardOwnerDTO> rewardOwnerDTOList = rewardService.findAllReward(marketId);
 
         return new ResponseEntity<>(rewardOwnerDTOList, HttpStatus.OK);
     }
+
+    @GetMapping("/customer/{couponId}/reward-list")
+    public ResponseEntity<List<RewardCustomerDTO>> customerRewardList(@PathVariable Long couponId) {
+
+        List<RewardCustomerDTO> rewardCustomerDTOS = rewardService.customerReward(couponId);
+        return new ResponseEntity<>(rewardCustomerDTOS, HttpStatus.OK);
+    }
+
+
 
 }

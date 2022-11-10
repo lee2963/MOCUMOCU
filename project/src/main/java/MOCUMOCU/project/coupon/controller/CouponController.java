@@ -1,10 +1,8 @@
 package MOCUMOCU.project.coupon.controller;
 
+import MOCUMOCU.project.coupon.dto.*;
 import MOCUMOCU.project.coupon.service.CouponServiceImpl;
-import MOCUMOCU.project.coupon.dto.CouponInfoDTO;
 import MOCUMOCU.project.reward.form.RewardInfoDTO;
-import MOCUMOCU.project.coupon.dto.SaveStampDTO;
-import MOCUMOCU.project.coupon.dto.UseStampDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -39,10 +37,10 @@ public class CouponController {
     }
 
 
-    @GetMapping("/{customerIdTest}/coupon")
-    public ResponseEntity<List<CouponInfoDTO>> findMyCoupons(@PathVariable Long customerIdTest) {
+    @GetMapping("/{customerId}/coupon")
+    public ResponseEntity<List<CouponInfoDTO>> findMyCoupons(@PathVariable Long customerId) {
 
-        List<CouponInfoDTO> couponInfoDTOList = couponService.findAllCoupon(customerIdTest);
+        List<CouponInfoDTO> couponInfoDTOList = couponService.findAllCoupon(customerId);
 
         return new ResponseEntity<>(couponInfoDTOList, HttpStatus.OK);
     }
@@ -52,5 +50,17 @@ public class CouponController {
 
         List<RewardInfoDTO> rewardInfoDTOList = couponService.findAllReward(couponId);
         return new ResponseEntity<>(rewardInfoDTOList, HttpStatus.OK);
+    }
+
+    @PostMapping("/set/customize")
+    public ResponseEntity<Void> setCustomize(@RequestBody SetCustomizeDTO setCustomizeDTO) {
+        couponService.setCustomizeImage(setCustomizeDTO.getCouponId(), setCustomizeDTO.getCustomizeId(), setCustomizeDTO.getType());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/set/coupon-time")
+    public ResponseEntity<Void> setCouponWithDate(@RequestBody SaveStampWithDayDTO saveStampWithDayDTO) {
+        couponService.earnStampSetDayTogether(saveStampWithDayDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

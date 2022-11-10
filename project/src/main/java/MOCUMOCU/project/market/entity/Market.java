@@ -1,7 +1,7 @@
 package MOCUMOCU.project.market.entity;
 
 import MOCUMOCU.project.coupon.entity.Coupon;
-import MOCUMOCU.project.reward.Reward;
+import MOCUMOCU.project.reward.entity.Reward;
 import MOCUMOCU.project.owner.entity.Owner;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +21,8 @@ public class Market {
     private String marketPhoneNum;
     private String marketName;
     private String marketAddress;
-    private String event;
+    private String eventBigImage;
+    private String eventSmallImage;
 
     @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")

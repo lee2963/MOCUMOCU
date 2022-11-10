@@ -31,8 +31,10 @@ public class Customer {
 
     private String birthDate;
 
+    private String identificationAnswer;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    private LocalDate lastDate; //마지막 접속 날짜 저장
+    private LocalDate attendance; //마지막 접속 날짜 저장
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Coupon> coupons = new ArrayList<>();
@@ -42,5 +44,6 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<CouponLog> couponLogs = new ArrayList<>();
+
 
 }

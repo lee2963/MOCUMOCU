@@ -1,8 +1,13 @@
-package MOCUMOCU.project.reward;
+package MOCUMOCU.project.reward.service;
 
+import MOCUMOCU.project.coupon.repository.CouponRepository;
+import MOCUMOCU.project.reward.entity.Reward;
 import MOCUMOCU.project.reward.form.RewardAddDTO;
 import MOCUMOCU.project.market.repository.MarketRepository;
+import MOCUMOCU.project.reward.form.RewardCustomerDTO;
 import MOCUMOCU.project.reward.form.RewardOwnerDTO;
+import MOCUMOCU.project.reward.repository.RewardRepository;
+import MOCUMOCU.project.reward.service.RewardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +22,7 @@ public class RewardServiceImpl implements RewardService {
 
     private final MarketRepository marketRepository;
     private final RewardRepository rewardRepository;
+    private final CouponRepository couponRepository;
 
     @Override
     public void addReward(RewardAddDTO rewardAddDTO) {
@@ -39,6 +45,25 @@ public class RewardServiceImpl implements RewardService {
         Reward updateReward = rewardRepository.findOne(reward.getId());
         updateReward.setRewardContent(reward.getRewardContent());
         updateReward.setNeedAmount(reward.getNeedAmount());
+    }
+
+    @Override
+    public List<RewardCustomerDTO> customerReward(Long couponId) {
+        Long marketId = couponRepository.findOne(couponId).getMarket().getId();
+
+        List<Reward> findRewards = rewardRepository.findByMarketId(marketId);
+        List<RewardCustomerDTO> rewardCustomerDTOS = new ArrayList<>();
+
+        for (Reward findReward : findRewards) {
+            RewardCustomerDTO rewardCustomerDTO = new RewardCustomerDTO();
+
+            rewardCustomerDTO.setReward(findReward.getRewardContent());
+            rewardCustomerDTO.setCouponRequire(findReward.getNeedAmount());
+
+            rewardCustomerDTOS.add(rewardCustomerDTO);
+        }
+
+        return rewardCustomerDTOS;
     }
 
     @Override
