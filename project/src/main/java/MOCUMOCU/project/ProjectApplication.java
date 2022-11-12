@@ -32,7 +32,7 @@ public class ProjectApplication {
 			privacy.setName("여민수");
 			privacy.setPassword("1234qwer!");
 			privacy.setEmail("yeo@owner.com");
-			privacy.setPhoneNum("010-6969-6969");
+			privacy.setPhoneNum("010-1234-5678");
 
 			owner.setPrivacy(privacy);
 
@@ -41,14 +41,28 @@ public class ProjectApplication {
 			Customer customer = new Customer();
 			customer.setGender(Gender.MALE);
 			customer.setBirthDate("1997-08-20");
+			customer.setUserPoint(80);
 			customer.setAttendance(LocalDate.now().minusDays(1));
-			privacy.setName("여민수12");
+			privacy.setName("여민수");
 			privacy.setPassword("1234qwer!");
 			privacy.setEmail("yeo@customer.com");
-			privacy.setPhoneNum("010-7474-7474");
+			privacy.setPhoneNum("010-11111-2222");
 			customer.setPrivacy(privacy);
 
 			customerService.join(customer);
+
+			Customer femaleCustomer = new Customer();
+			femaleCustomer.setGender(Gender.FEMALE);
+			femaleCustomer.setBirthDate("1997-08-20");
+			femaleCustomer.setUserPoint(0);
+			femaleCustomer.setAttendance(LocalDate.now().minusDays(1));
+			privacy.setName("여민지");
+			privacy.setPassword("1234qwer!");
+			privacy.setEmail("kim@customer.com");
+			privacy.setPhoneNum("010-1234-5678");
+			femaleCustomer.setPrivacy(privacy);
+
+			customerService.join(femaleCustomer);
 
 			Customize board1 = new Customize();
 			board1.setCustomizePoint(30);
